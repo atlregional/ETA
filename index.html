@@ -7,7 +7,8 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
     <link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
-    <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script> -->
     <style>
     body {
         margin: 0;
@@ -115,7 +116,7 @@ var highlight = {
 };
 
 
-$.getJSON("https://arc.garc.opendata.arcgis.com/datasets/c91e2e5a355a42308ebb9c0abe42e399_145.geojson",function(etaData){
+$.getJSON("http://arc.garc.opendata.arcgis.com/datasets/c91e2e5a355a42308ebb9c0abe42e399_145.geojson",function(etaData){
   L.geoJson( etaData, {
     style: function(feature){
       var f3llColor,
@@ -138,7 +139,7 @@ $.getJSON("https://arc.garc.opendata.arcgis.com/datasets/c91e2e5a355a42308ebb9c0
 });
 
 
-$.getJSON("https://arc.garc.opendata.arcgis.com/datasets/7b752dcfca54486c8290b399340a407c_17.geojson",function(data){
+$.getJSON("http://arc.garc.opendata.arcgis.com/datasets/7b752dcfca54486c8290b399340a407c_17.geojson",function(data){
   transitLayer = data;
   var transitIcon = L.icon({
     iconUrl: 'transit.png',
