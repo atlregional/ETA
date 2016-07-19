@@ -116,7 +116,7 @@ var highlight = {
 };
 
 
-$.getJSON("eta.geojson",function(etaData){
+$.getJSON("/eta.geojson",function(etaData){
   L.geoJson( etaData, {
     style: function(feature){
       var f3llColor,
