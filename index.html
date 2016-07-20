@@ -116,7 +116,7 @@ var highlight = {
 };
 
 
-$.getJSON("https://github.com/atlregional/ETA/blob/gh-pages/eta.geojson%20",function(etaData){
+$.getJSON("http://arc.garc.opendata.arcgis.com/datasets/c91e2e5a355a42308ebb9c0abe42e399_145.geojson",function(etaData){
   L.geoJson( etaData, {
     style: function(feature){
       var f3llColor,
@@ -131,7 +131,7 @@ $.getJSON("https://github.com/atlregional/ETA/blob/gh-pages/eta.geojson%20",func
      onEachFeature: function( feature, layer ){
       layer.on({
         click: function populate(){
-          document.getElementById('info').innerHTML = "ABOUT THIS ETA AREA " + '<br>' + "Census Tract Numer: "+ feature.properties.NAME+ '<br>'+ "Population: " + feature.properties.Population + '<br>'+"Asian Pacific Residents: "+ feature.properties.AsianPacif+ "%" + '<br>'+"Black Residents: "+ feature.properties.Black+ "%" + '<br>'+"Hispanic Residents: "+ feature.properties.Hispanic+ "%" + '<br>'+"Other Race Residents: "+ feature.properties.Other_Race+ "%" + '<br>'+"Residents over the age of 65: "+ feature.properties.AgeOvr65+ "%" + '<br>'+"Residents living in poverty: "+ feature.properties.Poverty+ "%";
+          document.getElementById('info').innerHTML = "ABOUT THIS ETA AREA " + '<br>' + "Census Tract Numer: "+ feature.properties.NAME+ '<br>'+ "Population: " + feature.properties.Population + '<br>'+"Asian Pacific Residents: "+ feature.properties.AsianPacif+ "%" + '<br>'+"African American Residents: "+ feature.properties.Black+ "%" + '<br>'+"Hispanic Residents: "+ feature.properties.Hispanic+ "%" + '<br>'+"Other Race Residents: "+ feature.properties.Other_Race+ "%" + '<br>'+"Residents over the age of 65: "+ feature.properties.AgeOvr65+ "%" + '<br>'+"Residents living in poverty: "+ feature.properties.Poverty+ "%";
         }
       });
     }
@@ -143,7 +143,7 @@ $.getJSON("https://arc.garc.opendata.arcgis.com/datasets/7b752dcfca54486c8290b39
   transitLayer = data;
   var transitIcon = L.icon({
     iconUrl: 'transit.png',
-    iconSize: [10,15]
+    iconSize: [13,18]
   });
   L.geoJson(data,{
     pointToLayer: function(feature,latlng){
