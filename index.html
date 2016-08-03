@@ -2,13 +2,17 @@
 <html>
 
 <head>
-    <meta charset=utf-8 />
+    <meta charset=utf-8 name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <title>ETA map</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
     <link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
-
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-zoomslider/v0.7.0/L.Control.Zoomslider.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-zoomslider/v0.7.0/L.Control.Zoomslider.css' rel='stylesheet' />
+    <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+    <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
     <style>
     body {
         margin: 0;
@@ -21,23 +25,24 @@
         bottom: 0;
         width: 100%;
     }
-    .legend{
-      height: 50px;
 
+    .legend {
+        height: 50px;
     }
+
     .legend label,
     .legend span {
         display: block;
         float: left;
         height: 25px;
-        width: 25%;
+        width: 30%;
         text-align: center;
         font-size: 9px;
         color: #808080;
     }
 
     .ui-control {
-        font: bold 12px/20px 'Helvetica', sans-serif;
+        font: 15px/20px 'Helvetica', sans-serif;
         background: #404040;
         color: #fff;
         position: absolute;
@@ -45,8 +50,9 @@
         right: 0;
         bottom: 0;
         z-index: 100;
-        width: 25%;
+        width: 22%;
         padding: 10px;
+        overflow: scroll;
     }
 
     .ui-control label {
@@ -61,12 +67,36 @@
         font-size: 32px;
         line-height: 38px;
     }
+
     img {
-    position: absolute;
-    left: 10px;
-    bottom: 0;
-    height:40px;
-}
+        position: absolute;
+        left: 10px;
+        bottom: 0;
+        height: 40px;
+    }
+
+
+    p {
+        font-weight: normal;
+        font: Arial;
+        color: white;
+    }
+
+    #title {
+        color: #e7a322;
+        font-weight: bold;
+    }
+
+    .leaflet-control-zoomslider-knob {
+        width: 14px;
+        height: 6px;
+    }
+
+    .leaflet-container .leaflet-control-zoomslider-body {
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+    }
     </style>
 </head>
 
@@ -76,100 +106,124 @@
     <div id='legend' style='display:none;'>
         <strong>Equitable Target Area Index</strong>
         <nav class='legend clearfix'>
-            <span style='background:#e5e5e5;''></span>
             <span style='background:#e7a322;'></span>
             <span style='background:#f26d27;'></span>
             <span style='background:#b34154;'></span>
-
-
-            <label>Non-ETA</label>
             <label>Medium </label>
             <label>High </label>
             <label>Very High</label>
             <!-- <small>Source: <a href="#link to source">Name of source</a></small> -->
     </div>
     <div id='map'></div>
-    <div id='info' class='ui-control'> Click on an ETA area to learn more
-    <img class=logo, src="arc_logo196.png"/>
+    <div id='info' class='ui-control'>
+        <div id='title'> Click on an Equitable Target Area to learn more</div>
+        <br>
+        <p> This tool helps ARC better understand complexities in communities of concern –high percentage of people living in poverty or high minority population – and how to make wise decisions regarding investments. This index is used to measure the impacts of investments and programs contained within The Region's Plan on ETAs. The ETA index is also used as input for project prioritization and evaluation, monitoring resource allocation, and assisting in decision-making.
+            <br> <a href="http://documents.atlantaregional.com/The-Atlanta-Region-s-Plan/rtp/appendices.pdf" style="color:#e7a322" target='blank'>To learn more please visit Appendix J of the Atlanta Region's Plan</a> </p>
+
+        <img class=logo, src="arc_logo196.png" />
     </div>
     <script>
-
     //load a layer
     L.mapbox.accessToken = 'pk.eyJ1IjoiYXRscmVnaW9uYWwiLCJhIjoiQmZ6d2tyMCJ9.oENm3NSf--qHrimdm9Vvdw';
 
     // initialize the map
-    var count = document.getElementById('AsianPacif');
+    //var count = document.getElementById('AsianPacif');
     var map = L.mapbox.map('map', 'atlregional.nlcec3mc', {
             gridControl: false,
             scrollWheelZoom: true,
-            maxBounds: [
-                [34.93548199355903, -80.67260742187499],
-                [32.61161640317033, -87.42370605468749]
-            ]
+            doubleClickZoom: true,
+            // maxBounds: [
+            //     [34.93548199355903, -80.67260742187499],
+            //     [32.61161640317033, -87.42370605468749]
+            // ]
         })
         .setView([33.81908916394128, -84.04403686523438], 9);
+    // L.control.zoomslider().addTo(map);
 
-var highlight = {
-    'color': '#333333',
-    'weight': 2,
-    'opacity': 1
-};
+    //Set click colors
+    function highlightFeature(e) {
+        var layer = e.target;
+        layer.setStyle({
+            weight: 3,
+            opacity: 1,
+            color: '#568eac'
 
-
-$.getJSON("http://arc.garc.opendata.arcgis.com/datasets/c91e2e5a355a42308ebb9c0abe42e399_145.geojson",function(etaData){
-  L.geoJson( etaData, {
-    style: function(feature){
-      var f3llColor,
-          ETA = feature.properties.ETA;
-      if ( ETA == 4 ) fillColor = "#f5f5f5", fillOpacity =".1";
-      else if ( ETA == 3) fillColor = "#e8a40f", fillOpacity= ".9";
-      else if ( ETA == 2) fillColor = "#e76221", fillOpacity= ".9";
-      else if ( ETA == 1 ) fillColor = "#a43e4c", fillOpacity=".9";
-      else fillColor = "#f7f7f7", fillOpacity= ".0";  // no data
-      return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: fillOpacity };
-    },
-     onEachFeature: function( feature, layer ){
-      layer.on({
-        click: function populate(){
-          document.getElementById('info').innerHTML = "ABOUT THIS ETA AREA " + '<br>' + "Census Tract Numer: "+ feature.properties.NAME+ '<br>'+ "Population: " + feature.properties.Population + '<br>'+"Asian Pacific Residents: "+ feature.properties.AsianPacif+ "%" + '<br>'+"African American Residents: "+ feature.properties.Black+ "%" + '<br>'+"Hispanic Residents: "+ feature.properties.Hispanic+ "%" + '<br>'+"Other Race Residents: "+ feature.properties.Other_Race+ "%" + '<br>'+"Residents over the age of 65: "+ feature.properties.AgeOvr65+ "%" + '<br>'+"Residents living in poverty: "+ feature.properties.Poverty+ "%";
-        }
-      });
+        });
     }
-  }).addTo(map);
-});
 
-
-$.getJSON("http://arc.garc.opendata.arcgis.com/datasets/7b752dcfca54486c8290b399340a407c_17.geojson",function(data){
-  transitLayer = data;
-  var transitIcon = L.icon({
-    iconUrl: 'transit.png',
-    iconSize: [13,18]
-  });
-  L.geoJson(data,{
-    pointToLayer: function(feature,latlng){
-      var marker = L.marker(latlng,{icon: transitIcon});
-      marker.bindPopup('MARTA Station: '+feature.properties.Stn_Code + '<br/>' +feature.properties.STATION);
-    return marker;
+    function resetHighlight(e) {
+        var layer = e.target;
+        layer.setStyle({
+            weight: 3,
+            opacity: 1,
+            color: ''
+        });
     }
-  }).addTo(map);
-});
 
 
 
-map.legendControl
+    $.getJSON("http://arc.garc.opendata.arcgis.com/datasets/c91e2e5a355a42308ebb9c0abe42e399_145.geojson", function(etaData) {
+        L.geoJson(etaData, {
+            style: function(feature) {
+                var fllColor,
+                    ETA = feature.properties.ETA;
+                if (ETA == 4) fillColor = "#f5f5f5", fillOpacity = ".1";
+                else if (ETA == 3) fillColor = "#e8a40f", fillOpacity = ".9";
+                else if (ETA == 2) fillColor = "#e76221", fillOpacity = ".9";
+                else if (ETA == 1) fillColor = "#a43e4c", fillOpacity = ".9";
+                else fillColor = "#f7f7f7", fillOpacity = ".0"; // no data
+                return {
+                    color: "",
+                    weight: 1,
+                    fillColor: fillColor,
+                    fillOpacity: fillOpacity
+                };
+            },
+            onEachFeature: function(feature, layer) {
+                layer.on({
+                    click: function populate() {
+                        document.getElementById('info').innerHTML = "<h3 style='color:#e8a40f'>About this Equitable Target Area </h3>" + '<br>' + "Census Tract Numer: " + feature.properties.NAME + '<br>' + "Population: " + feature.properties.Population + '<br>' + "Asian Pacific Residents: " + feature.properties.AsianPacif + "%" + '<br>' + "African American Residents: " + feature.properties.Black + "%" + '<br>' + "Hispanic Residents: " + feature.properties.Hispanic + "%" + '<br>' + "Other Race Residents: " + feature.properties.Other_Race + "%" + '<br>' + "Residents over the age of 65: " + feature.properties.AgeOvr65 + "%" + '<br>' + "Residents living in poverty: " + feature.properties.Poverty + "%" + '<br>' + '<br>' + '<br>' + '<br>' + "<img src='arc_logo196.png' />";
+                    },
+                    mouseout: function reset() {
+                            document.getElementById('info').innerHTML = "<h3 style='color:#e7a322'> Click on an Equitable Target Area to learn more </h3>" + "This tool helps ARC better understand complexities in communities of concern –high percentage of people living in poverty or high minority population – and how to make wise decisions regarding investments. This index is used to measure the impacts of investments and programs contained within The Region's Plan on ETAs. The ETA index is also used as input for project prioritization and evaluation, monitoring resource allocation, and assisting in decision-making." + '<br>' + '<br>' + "<a href='http://documents.atlantaregional.com/The-Atlanta-Region-s-Plan/rtp/appendices.pdf' style='color:#e7a322' target='blank'>To learn more please visit Appendix J of the Atlanta Region's Plan </a>"  ;
+                    }
+                });
+                layer.on({
+                    click: highlightFeature,
+                    mouseout: resetHighlight
+                });
+            }
+        }).addTo(map);
+    });
+
+
+    $.getJSON("http://arc.garc.opendata.arcgis.com/datasets/7b752dcfca54486c8290b399340a407c_17.geojson", function(data) {
+        transitLayer = data;
+        var transitIcon = L.icon({
+            iconUrl: 'transit.png',
+            iconSize: [17, 22]
+        });
+        var transitIcon2 = L.icon({
+            iconUrl: 'transit.png',
+            iconSize: [15, 20],
+        });
+        L.geoJson(data, {
+            pointToLayer: function(feature, latlng) {
+                var marker = L.marker(latlng, {
+                    icon: transitIcon
+                });
+                marker.bindPopup('<strong> MARTA Station: </strong>' + feature.properties.Stn_Code + '<br/>' + feature.properties.STATION);
+                return marker;
+            }
+
+        }).addTo(map);
+    });
+
+
+    map.legendControl
         .addLegend(document.getElementById('legend').innerHTML)
         .setPosition('bottomleft');
-
-map.gridLayer
-    .on('mousemove',function(o) {
-        if (o.data && o.data.count) {
-          count.innerHTML = '<label>Number Asian Pacific Residents</label><strong>' + o.data.count + '</strong>';
-        } else {
-          count.innerHTML = '';
-        }
-    }).on('mouseout', function(o) {
-        count.innerHTML = '';
-    });
     </script>
 </body>
 
