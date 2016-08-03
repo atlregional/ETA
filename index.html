@@ -75,7 +75,6 @@
         height: 40px;
     }
 
-
     p {
         font-weight: normal;
         font: Arial;
@@ -120,7 +119,6 @@
         <br>
         <p> This tool helps ARC better understand complexities in communities of concern –high percentage of people living in poverty or high minority population – and how to make wise decisions regarding investments. This index is used to measure the impacts of investments and programs contained within The Region's Plan on ETAs. The ETA index is also used as input for project prioritization and evaluation, monitoring resource allocation, and assisting in decision-making.
             <br> <a href="http://documents.atlantaregional.com/The-Atlanta-Region-s-Plan/rtp/appendices.pdf" style="color:#e7a322" target='blank'>To learn more please visit Appendix J of the Atlanta Region's Plan</a> </p>
-
         <img class=logo, src="arc_logo196.png" />
     </div>
     <script>
@@ -186,7 +184,7 @@
                         document.getElementById('info').innerHTML = "<h3 style='color:#e8a40f'>About this Equitable Target Area </h3>" + '<br>' + "Census Tract Numer: " + feature.properties.NAME + '<br>' + "Population: " + feature.properties.Population + '<br>' + "Asian Pacific Residents: " + feature.properties.AsianPacif + "%" + '<br>' + "African American Residents: " + feature.properties.Black + "%" + '<br>' + "Hispanic Residents: " + feature.properties.Hispanic + "%" + '<br>' + "Other Race Residents: " + feature.properties.Other_Race + "%" + '<br>' + "Residents over the age of 65: " + feature.properties.AgeOvr65 + "%" + '<br>' + "Residents living in poverty: " + feature.properties.Poverty + "%" + '<br>' + '<br>' + '<br>' + '<br>' + "<img src='arc_logo196.png' />";
                     },
                     mouseout: function reset() {
-                            document.getElementById('info').innerHTML = "<h3 style='color:#e7a322'> Click on an Equitable Target Area to learn more </h3>" + "This tool helps ARC better understand complexities in communities of concern –high percentage of people living in poverty or high minority population – and how to make wise decisions regarding investments. This index is used to measure the impacts of investments and programs contained within The Region's Plan on ETAs. The ETA index is also used as input for project prioritization and evaluation, monitoring resource allocation, and assisting in decision-making." + '<br>' + '<br>' + "<a href='http://documents.atlantaregional.com/The-Atlanta-Region-s-Plan/rtp/appendices.pdf' style='color:#e7a322' target='blank'>To learn more please visit Appendix J of the Atlanta Region's Plan </a>"  ;
+                        document.getElementById('info').innerHTML = "<h3 style='color:#e7a322'> Click on an Equitable Target Area to learn more </h3>" + "This tool helps ARC better understand complexities in communities of concern –high percentage of people living in poverty or high minority population – and how to make wise decisions regarding investments. This index is used to measure the impacts of investments and programs contained within The Region's Plan on ETAs. The ETA index is also used as input for project prioritization and evaluation, monitoring resource allocation, and assisting in decision-making." + '<br>' + '<br>' + "<a href='http://documents.atlantaregional.com/The-Atlanta-Region-s-Plan/rtp/appendices.pdf' style='color:#e7a322' target='blank'>To learn more please visit Appendix J of the Atlanta Region's Plan </a>";
                     }
                 });
                 layer.on({
