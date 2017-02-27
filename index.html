@@ -161,7 +161,7 @@
 
 
 
-    $.getJSON("https://arc.garc.opendata.arcgis.com/datasets/c91e2e5a355a42308ebb9c0abe42e399_145.geojson", function(etaData) {
+    $.getJSON("./Equitable_Target_Areas_2015.geojson", function(etaData) {
         L.geoJson(etaData, {
             style: function(feature) {
                 var fllColor,
@@ -196,7 +196,7 @@
     });
 
 
-    $.getJSON("https://arc.garc.opendata.arcgis.com/datasets/7b752dcfca54486c8290b399340a407c_17.geojson", function(data) {
+    $.getJSON("./Transit_Rail_Stations.geojson", function(data) {
         transitLayer = data;
         var transitIcon = L.icon({
             iconUrl: 'transit.png',
